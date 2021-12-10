@@ -82,7 +82,7 @@ namespace esp8266 {
         // let response = getResponse("[\"", 200)
         // value = response.slice(response.indexOf("[\"") + 2, response.indexOf("\"]"))
 
-        let response = getResponse("", 200)
+        let response = getLastline(200)
         value = response
 
         // Close the connection.

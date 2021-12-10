@@ -123,6 +123,51 @@ namespace esp8266 {
     }
 
 
+    /**
+     * Get the last line  response from ESP8266.
+     * Return the last  line.
+     * @param timeout Timeout in milliseconds.
+     */
+    //% blockHidden=true
+    //% blockId=esp8266_get_lastLine
+    export function getLastline(timeout: number = 100): string {
+        let responseLine = ""
+        let timestamp = input.runningTime()
+        while (true) {
+            // Timeout.
+            if (input.runningTime() - timestamp > timeout) {
+                break
+            }
+
+            // Read until the end of the line.
+            // HTTP/1.1 200 OK
+            // connection: keep-alive
+            // content-type: application/json;charset=utf-8
+            // access-control-allow-origin: *
+            // content-encoding: gzip
+            // content-length: 28
+
+            // 45
+            rxData += serial.readString()
+            let last_line = false
+            if (rxData.includes("\r\n")) {
+                // Check if expected response received.
+                if (rxData.length == 0) 
+                    last_line = true
+                
+                // Trim the Rx data before loop again.
+                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+            }
+            if (last_line) {
+                responseLine = serial.readString()
+                break
+            }
+                
+        }
+
+        return responseLine
+    }
+
 
     /**
      * Format the encoding of special characters in the url.
