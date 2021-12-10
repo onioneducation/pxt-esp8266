@@ -159,7 +159,9 @@ namespace esp8266 {
                 rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
             }
             if (last_line) {
-                responseLine = serial.readString()
+                rxData += serial.readString()
+                responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                 break
             }
                 
