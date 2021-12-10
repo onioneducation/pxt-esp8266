@@ -150,19 +150,20 @@ namespace esp8266 {
             // 45
             rxData += serial.readString()
             let last_line = false
+            // Read until the end of the line.
+            rxData += serial.readString()
             if (rxData.includes("\r\n")) {
                 // Check if expected response received.
-                if (rxData.length == 0) 
-                    last_line = true
-                
+                if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
+                    responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+
+                    // Trim the Rx data for next call.
+                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                    break
+                }
+
                 // Trim the Rx data before loop again.
                 rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-            }
-            if (last_line) {
-                rxData += serial.readString()
-                responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
-                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-                break
             }
                 
         }
