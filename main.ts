@@ -133,6 +133,8 @@ namespace esp8266 {
     export function getLastline(timeout: number = 100): string {
         let responseLine = ""
         let timestamp = input.runningTime()
+        let last_line = false
+
         while (true) {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
@@ -149,19 +151,22 @@ namespace esp8266 {
 
             // 45
             rxData += serial.readString()
-            let last_line = false
             // Read until the end of the line.
             rxData += serial.readString()
             if (rxData.includes("\r\n")) {
-                // Check if expected response received.
-                if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
+                if (last_line && rxData.length > 0) {
                     responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
-
-                    // Trim the Rx data for next call.
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                     break
                 }
-
+                // Check if expected response received.
+                if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
+                    responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+                    last_line = true
+                    
+                    // Trim the Rx data for next call.
+                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                }
                 // Trim the Rx data before loop again.
                 rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
             }
