@@ -79,8 +79,8 @@ namespace esp8266 {
         }
 
         // Get the pin value.
-        let response = getResponse("[\"", 200)
-        value = response.slice(response.indexOf("[\"") + 2, response.indexOf("\"]"))
+        let response = getResponse("{\"", 200)
+        value = response.slice(response.indexOf("{\"") + 2, response.indexOf("\"}"))
         
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)
