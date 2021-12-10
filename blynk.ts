@@ -56,16 +56,16 @@ namespace esp8266 {
         }
 
         // Construct the data to send.
-        let data = "GET /" + authToken + "/get/" + pin + " HTTP/1.1\r\n"
+        //let data = "GET /" + authToken + "/get/" + pin + " HTTP/1.1\r\n"
+        let data = "GET /" + "external/api" + "/get?token=" + authToken + "&" + pin  + " HTTP/1.1\r\n"
+
 
         // Send the data.
         sendCommand("AT+CIPSEND=" + (data.length + 2), "OK")
         sendCommand(data)
-        serial.writeString(data + "\r\n")
         
         // Return if "SEND OK" is not received.
         if (getResponse("SEND OK", 10000) == "") {
-            serial.writeString("not send ok!\r\n")
             // Close the connection and return.
             sendCommand("AT+CIPCLOSE", "OK", 1000)
             return value
@@ -73,7 +73,6 @@ namespace esp8266 {
 
         // Return if Blynk response is not 200.
         if (getResponse("HTTP/1.1 200 OK", 10000) == "") {
-            serial.writeString("not 200 ok!\r\n")
             // Close the connection and return.
             sendCommand("AT+CIPCLOSE", "OK", 1000)
             return value
@@ -83,8 +82,6 @@ namespace esp8266 {
         let response = getResponse("[\"", 200)
         value = response.slice(response.indexOf("[\"") + 2, response.indexOf("\"]"))
         
-        serial.writeString(value +" slice ok!\r\n")
-
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)
 
@@ -125,7 +122,9 @@ namespace esp8266 {
         }
 
         // Construct the data to send.
-        let data = "GET /" + authToken + "/update/" + pin + "?value=" + formatUrl(value) + " HTTP/1.1\r\n"
+        //authToken 
+        //let data = "GET /" + authToken + "/update/" + pin + "?value=" + formatUrl(value) + " HTTP/1.1\r\n"
+        let data = "GET /" + "external/api" + "/update?token=" + authToken + "&" + pin + "=" + formatUrl(value) + " HTTP/1.1\r\n"
 
         // Send the data.
         sendCommand("AT+CIPSEND=" + (data.length + 2))
