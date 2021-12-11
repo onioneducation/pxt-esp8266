@@ -87,6 +87,7 @@ namespace esp8266 {
 
         // let response = getLastline(200)
         // value = response
+        
 
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)
