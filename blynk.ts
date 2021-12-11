@@ -90,7 +90,7 @@ namespace esp8266 {
         sendCommand("AT+CIPCLOSE", "OK", 1000)
 
         let response = getResponse("CLOSED", 200)
-        value = response.slice(0,response.indexOf("CLOSED"))
+        value = response.slice(0)
         
         // Set the upload successful flag and return.
         // Make sure the value is not empty.
