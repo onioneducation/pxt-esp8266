@@ -138,7 +138,9 @@ namespace esp8266 {
         while (true) {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
+                responseLine = rxData
                 break
+
             }
 
             // Read until the end of the line.
@@ -156,7 +158,7 @@ namespace esp8266 {
             if (rxData.includes("\r\n")) {
                 if (last_line && rxData.length > 2) {
                     responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
-                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                    rxData = rxData.slice(0,rxData.indexOf("\r\n"))
                     break
                 }
                 // Check if expected response received.
@@ -170,6 +172,10 @@ namespace esp8266 {
                 else 
                     // Trim the Rx data before loop again.
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+            }
+            else if (last_line) {
+                responseLine = rxData.slice(0)
+                break
             }
                 
         }

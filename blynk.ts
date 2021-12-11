@@ -82,16 +82,12 @@ namespace esp8266 {
         // let response = getResponse("[\"", 200)
         // value = response.slice(response.indexOf("[\"") + 2, response.indexOf("\"]"))
 
-        // let response = getLastline(200)
-        // value = response
-
+        let response = getLastline(200)
+        value = response
 
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)
 
-        let response = getResponse("CLOSED", 200)
-        value = response.slice(0)
-        
         // Set the upload successful flag and return.
         // Make sure the value is not empty.
         if (value != "") {
