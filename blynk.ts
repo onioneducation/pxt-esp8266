@@ -82,12 +82,12 @@ namespace esp8266 {
         // let response = getResponse("[\"", 200)
         // value = response.slice(response.indexOf("[\"") + 2, response.indexOf("\"]"))
 
-        let response = getResponse("CLOSED", 200)
-        value = response.slice(0, response.indexOf("CLOSED"))
+        let response = getResponse("45", 200)
+        value = response.slice()
 
         // let response = getLastline(200)
         // value = response
-        
+
 
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)
