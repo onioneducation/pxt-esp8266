@@ -84,10 +84,10 @@ namespace esp8266 {
 
         let response = getLastline(200)
         value = response
-        serial.writeString("Yes,here")
+        serial.writeString("Yes,here." + value  + "\r\n")
 
         // Close the connection.
-        sendCommand("AT+CIPCLOSE", "OK", 1000)
+        //sendCommand("AT+CIPCLOSE", "OK", 1000)
 
         // Set the upload successful flag and return.
         // Make sure the value is not empty.
