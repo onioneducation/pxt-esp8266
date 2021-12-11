@@ -84,6 +84,7 @@ namespace esp8266 {
 
         let response = getLastline(200)
         value = response
+        serial.writeString("Yes,here")
 
         // Close the connection.
         sendCommand("AT+CIPCLOSE", "OK", 1000)

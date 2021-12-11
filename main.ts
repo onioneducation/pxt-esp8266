@@ -174,7 +174,7 @@ namespace esp8266 {
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
             }
             else if (last_line) {
-                responseLine = rxData.slice(0)
+                responseLine = rxData
                 break
             }
                 
