@@ -131,7 +131,7 @@ namespace esp8266 {
     //% blockHidden=true
     //% blockId=esp8266_get_lastLine
     export function getLastline(timeout: number = 100): string {
-        let responseLine = ""
+        let responseLine = "N"
         let timestamp = input.runningTime()
         let last_line = false
 
@@ -154,21 +154,22 @@ namespace esp8266 {
             // Read until the end of the line.
             rxData += serial.readString()
             if (rxData.includes("\r\n")) {
-                if (last_line && rxData.length > 0) {
+                if (last_line && rxData.length > 2) {
                     responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                     break
                 }
                 // Check if expected response received.
                 if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
-                    responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+                    //responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
                     last_line = true
                     
                     // Trim the Rx data for next call.
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                 }
-                // Trim the Rx data before loop again.
-                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                else 
+                    // Trim the Rx data before loop again.
+                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
             }
                 
         }
