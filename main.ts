@@ -138,7 +138,7 @@ namespace esp8266 {
         while (true) {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
-                responseLine = rxData
+                responseLine = "O"
                 break
 
             }
@@ -157,6 +157,8 @@ namespace esp8266 {
             if (rxData.includes("content-length")) {
                 last_line = true
                 rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                responseLine = "C"
+
             }
             else {
                 if (!last_line) {
@@ -164,7 +166,8 @@ namespace esp8266 {
                 }
                 else {
                     if (rxData == "\r\n")
-                       rxData = ""
+                        rxData = ""
+                    responseLine = "F"
                 }
             }
             // rxData += serial.readString()
