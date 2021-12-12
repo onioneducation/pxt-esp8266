@@ -138,7 +138,7 @@ namespace esp8266 {
         while (true) {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
-                responseLine = "O"
+                //responseLine = "O"
                 break
 
             }
