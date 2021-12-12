@@ -139,6 +139,7 @@ namespace esp8266 {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
                 responseLine = rxData
+                serial.writeString("HII"+ "111" + "\r\n")
                 break
 
             }
@@ -152,7 +153,6 @@ namespace esp8266 {
             // content-length: 28
 
             // 45
-            rxData += serial.readString()
             // Read until the end of the line.
             rxData += serial.readString()
             if (rxData.includes("\r\n")) {
@@ -175,11 +175,12 @@ namespace esp8266 {
             }
             else if (last_line) {
                 responseLine = rxData
+                serial.writeString("HII"+ "222" + "\r\n")
                 break
             }
                 
         }
-
+        serial.writeString("HII"+responseLine + "\r\n")
         return responseLine
     }
 
