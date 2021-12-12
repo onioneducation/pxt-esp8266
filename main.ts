@@ -139,7 +139,6 @@ namespace esp8266 {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
                 responseLine = rxData
-                serial.writeString("HII"+ "111" + "\r\n")
                 break
 
             }
@@ -155,32 +154,45 @@ namespace esp8266 {
             // 45
             // Read until the end of the line.
             rxData += serial.readString()
-            if (rxData.includes("\r\n")) {
-                if (last_line && rxData.length > 2) {
-                    responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
-                    rxData = rxData.slice(0,rxData.indexOf("\r\n"))
-                    break
+            if (rxData.includes("content-length")) {
+                last_line = true
+                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+            }
+            else {
+                if (!last_line) {
+                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                 }
-                // Check if expected response received.
-                if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
-                    //responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
-                    last_line = true
+                else {
+                    if (rxData == "\r\n")
+                       rxData = ""
+                }
+            }
+            // rxData += serial.readString()
+            // if (rxData.includes("\r\n")) {
+            //     if (last_line && rxData.length > 2) {
+            //         responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+            //         rxData = rxData.slice(0,rxData.indexOf("\r\n"))
+            //         break
+            //     }
+            //     // Check if expected response received.
+            //     if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
+            //         //responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+            //         last_line = true
                     
-                    // Trim the Rx data for next call.
-                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-                }
-                else 
-                    // Trim the Rx data before loop again.
-                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-            }
-            else if (last_line) {
-                responseLine = rxData
-                serial.writeString("HII"+ "222" + "\r\n")
-                break
-            }
+            //         // Trim the Rx data for next call.
+            //         rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+            //     }
+            //     else 
+            //         // Trim the Rx data before loop again.
+            //         rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+            // }
+            // else if (last_line) {
+            //     responseLine = rxData
+            //     serial.writeString("HII"+ "222" + "\r\n")
+            //     break
+            // }
                 
         }
-        serial.writeString("HII"+responseLine + "\r\n")
         return responseLine
     }
 
