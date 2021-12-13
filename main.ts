@@ -153,11 +153,9 @@ namespace esp8266 {
             // 45
             // Read until the end of the line.
             rxData += serial.readString()
-            var re = /content-length:/gi
-            if (rxData.search(re) != -1) {
+            if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length: 2")) {
                 last_line = true
                 rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-                responseLine = "C"
             }
             else {
                 if (!last_line) {
