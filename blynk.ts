@@ -61,8 +61,8 @@ namespace esp8266 {
 
 
         // Send the data.
-        sendCommand("AT+CIPSEND=" + (data.length + 2), "OK")
-        sendCommand(data)
+        sendCommand("AT+CIPSEND=" + (data.length + 4), "OK")
+        sendCommand(data + "\r\n")
         
         // Return if "SEND OK" is not received.
         if (getResponse("SEND OK", 10000) == "") {
