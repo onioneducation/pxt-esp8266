@@ -162,11 +162,15 @@ namespace esp8266 {
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
                 }
                 else {
-                    if (rxData != "\r\n") {
+                    if (rxData.includes("\r\n")){
+                        rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                    }
+                    else {
                         responseLine = rxData
                         break
                     }
-                    rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+
+                    
                 }
             }
             // rxData += serial.readString()
