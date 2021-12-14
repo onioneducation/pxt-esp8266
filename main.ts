@@ -138,10 +138,9 @@ namespace esp8266 {
         while (true) {
             // Timeout.
             if (input.runningTime() - timestamp > timeout) {
-                while(rxData.indexOf("\r\n") != -1) {
+                while(rxData.includes("\r\n"))
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-                    responseLine = rxData
-                }
+                responseLine = rxData
                 break
             }
 
