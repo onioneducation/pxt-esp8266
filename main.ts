@@ -153,25 +153,29 @@ namespace esp8266 {
             // 45
             // Read until the end of the line.
             rxData += serial.readString()
-            if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length: 2")) {
-                last_line = true
-                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-            }
-            else {
-                if (!last_line) {
+            if (rxData.includes("\r\n")) {
+                if (rxData.slice(0, rxData.indexOf("\r\n")).includes("content-length")) {
+                    last_line = true
                     rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                    responseLine = "F"
                 }
-                else {
-                    if (rxData.includes("\r\n")){
-                        rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
-                    }
-                    else {
-                        responseLine = rxData
-                        break
-                    }
-
-                    
-                }
+                rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                // else {
+                //     if (!last_line) {
+                //         rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                //         responseLine = "H"
+                //     }
+                //     else {
+                //         if (rxData.length <= 2){
+                //             rxData = rxData.slice(rxData.indexOf("\r\n") + 2)
+                //             responseLine = "E"
+                //         }
+                //         else {
+                //             responseLine = rxData.slice(0, rxData.indexOf("\r\n"))
+                //             break
+                //         }
+                //     }
+                // }
             }
             // rxData += serial.readString()
             // if (rxData.includes("\r\n")) {
